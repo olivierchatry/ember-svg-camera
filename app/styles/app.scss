@@ -1,0 +1,35 @@
+div.fullsize {
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+}
+
+svg {
+	width: 100%;
+	height: 100%;
+}
+
+svg.svg-stage-axis-scale {
+	width: 100%;
+	height: 100%;
+	line.axis {
+			stroke-width: 1;
+			stroke-opacity: 0.8;
+	}
+	line.tick {
+			stroke-width: 1;
+			stroke-opacity: 0.8;
+	}
+	line.tick-thin {
+			stroke-width: 0.5;
+			stroke-opacity: 0.2;
+	}
+	text.tick {
+			stroke-width: 1;
+	}
+}
