@@ -14,7 +14,8 @@ svg {
 	height: 100%;
 }
 
-svg.svg-stage-axis-scale {
+g.svg-grid {
+	fill: #000;
 	width: 100%;
 	height: 100%;
 	line.axis {
@@ -31,5 +32,10 @@ svg.svg-stage-axis-scale {
 	}
 	text.tick {
 			stroke-width: 1;
+	}
+	rect.background {
+		width: 100%;
+		height: 100%;
+		fill:#000;
 	}
 }
