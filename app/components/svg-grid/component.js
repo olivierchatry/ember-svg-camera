@@ -38,6 +38,11 @@ export default Ember.Component.extend(ResizeEvent, {
 		this.set("ticks", this.generateSvgLines())
 		this.set("subTicks", this.generateSubs())
 		this.updateColor()
+		this.updateFun = () => this.updateDisplay() 
+		this.updateList.push(this.updateFun)
+	}),
+	onWillDestroyElement: Ember.on("willDestroyElement", function() {
+		this.updateList.removeObject(this.updateFn)
 	}),
 	ratio:1,
 	scaleExtent(x1, x2, y1) {
@@ -161,8 +166,5 @@ export default Ember.Component.extend(ResizeEvent, {
 				textY.textContent = -String(-(-(disp).toFixed(1)))
 			}
 		}
-	},
-	updateElementViewBox: function() {
-		this.updateDisplay()
-	}.observes("camera.{x1,y1,x2,y2}", "uiState.globalScale")
+	}
 })

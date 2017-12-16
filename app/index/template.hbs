@@ -1,20 +1,19 @@
 
 <div class="fullsize">
-	{{#svg-viewer as |camera|}}
+	{{#svg-viewer as |camera updateList|}}
 		<rect x=0 y=0 width={{camera.viewWidth}} height={{camera.viewHeight}} />
-		{{svg-grid camera=camera}}
-
+		{{svg-grid camera=camera updateList=updateList}}
 		{{#svg-viewport camera=camera}}
-			{{#svg-stage camera=camera}}
-
-				{{svg-image href="/images/01.jpg" x=100 y=100 width=320 height=240}}
-				<circle
-					cx=100
-					cy=100
-					r=10
-					fill="white"
-				/>
-
+			{{#svg-stage camera=camera updateList=updateList as |images|}}
+				{{#each images as |image|}}
+					{{svg-image href="/images/01.svg"
+						x=image.x 
+						y=image.y 
+						width=image.w 
+						height=image.h
+						updateList=updateList
+					}}
+				{{/each}}
 			{{/svg-stage}}
 		{{/svg-viewport}}
 	{{/svg-viewer}}
