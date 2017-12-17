@@ -14,8 +14,8 @@ export default Ember.Component.extend({
 			const delta =  (timestamp - previous) / 1000.0
 			previous = timestamp
 			angle = angle + (Math.PI / 8) * delta
-			angleZoom = angleZoom + (Math.PI / 4) * delta * 0.1
-			const zoom = 11000 + Math.cos(angleZoom) * 10000
+			angleZoom = angleZoom + (Math.PI / 4) * delta * 0.2
+			const zoom = 10500 + Math.cos(angleZoom) * 10000
 			const center = {
 				x:10000000 + Math.cos(angle) * zoom * 0.25,
 				y:10000000 + Math.sin(angle) * zoom * 0.25
@@ -36,15 +36,13 @@ export default Ember.Component.extend({
 	}),
 	images:Ember.computed(function() {
 		const images = []
-		for (let i = 0; i < 100; ++i) {
-			const ratio = 30/50
-			const w = randInt(10, 320) 
+		for (let i = 0; i < 2000; ++i) {
 			const d = 10000
 			const image = {
 				x:randFloat(10000000 - d, 10000000 + d),
 				y:randFloat(10000000 - d, 10000000 + d),
-				w:w,
-				h:w * ratio
+				w:30,
+				h:50
 			}
 			images.push(image)
 		}
@@ -56,7 +54,7 @@ export default Ember.Component.extend({
 		x1 -= x, y1 -= y, x2 -= x, y2 -= y
 		const transform = `matrix(${2 / (x2 - x1)} 0 0 ${2 / (y2 - y1)} ${-(x2 + x1) / (x2 - x1)} ${-(y2 + y1) / (y2 - y1)})`
 		this.element.setAttributeNS(null,"transform", transform)
-		this.updateList.forEach(a => a(x, y, (x2 - x1) / this.camera.viewWidth, (y2 - y1)  / this.camera.viewHeight))
+		this.updateList.forEach(a => a(x, y, this.camera.viewWidth / (x2 - x1), this.camera.viewHeight / (y2 - y1)))
 	}
 	// transformObserver:Ember.observer("camera.viewWithRatio.{x1,y1,x2,y2}", function() {
 	// 	this.updateMatrix()
