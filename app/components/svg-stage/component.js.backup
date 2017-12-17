@@ -1,51 +1,75 @@
 import Ember from 'ember';
 
 const randFloat = (min, max) => Math.random() * (max - min) + min;
-const randInt		= (min, max) => Math.floor(randFloat(min, max));
+
 export default Ember.Component.extend({
 	tagName:"g",
 	attributeBindings:["transform"],
+	zoom:1000,
+	zoomSpeed:0,
+	center:{x:10000000, y:10000000},
+	keyDown(event) {
+		switch ( event.keyCode ) {
+			case 38: /*up*/
+			case 87: /*W*/ this.zoomSpeed = 100; break;
+
+			case 40: /*down*/
+			case 83: /*S*/ this.zoomSpeed = -100; break;
+		}
+	},
+	keyUp(event) {
+		switch ( event.keyCode ) {
+			case 38: /*up*/
+			case 87: /*W*/ this.zoomSpeed = 0; break;
+
+			case 40: /*down*/
+			case 83: /*S*/ this.zoomSpeed = 0; break;
+		}
+	},
 	onDidInsertElement:Ember.on("didInsertElement", function() {
 		let previous = performance.now()
-		let angle = 0, angleZoom = 0
-
+		$(window).on('keyup', (event) => this.keyUp(event))
+		$(window).on('keydown', (event) => this.keyDown(event))
 		const fct = () => {
 			const timestamp = performance.now()
 			const delta =  (timestamp - previous) / 1000.0
 			previous = timestamp
-			angle = angle + (Math.PI / 8) * delta
-			angleZoom = angleZoom + (Math.PI / 4) * delta * 0.2
-			const zoom = 10200 + Math.cos(angleZoom) * 10000
-			const center = {
-				x:10000000 + Math.cos(angle) * zoom * 0.25,
-				y:10000000 + Math.sin(angle) * zoom * 0.25
-			}
+
+			this.zoom += this.zoomSpeed * delta
 
 			this.camera.setProperties({
-				x1:-zoom + center.x,
-				y1:-zoom + center.y,
-				x2: zoom + center.x,
-				y2: zoom + center.y
+				x1:-this.zoom + this.center.x,
+				y1:-this.zoom + this.center.y,
+				x2: this.zoom + this.center.x,
+				y2: this.zoom + this.center.y
 			})
 			this.updateMatrix()
-			//setTimeout(fct.bind(this), 100)
+			//  setTimeout(fct.bind(this), 100)
 			window.requestAnimationFrame(fct.bind(this))
 		}
-		//setTimeout(fct.bind(this), 100)
+		// setTimeout(fct.bind(this), 100)
 		window.requestAnimationFrame(fct.bind(this))
 	}),
 	images:Ember.computed(function() {
 		const images = []
-		for (let i = 0; i < 2000; ++i) {
-			const d = 10000
-			const image = {
-				x:randFloat(10000000 - d, 10000000 + d),
-				y:randFloat(10000000 - d, 10000000 + d),
-				w:30,
-				h:50
-			}
-			images.push(image)
+		// for (let i = 0; i < 1000; ++i) {
+		// 	const d = 10000
+		// 	const image = {
+		// 		x:randFloat(10000000 - d, 10000000 + d),
+		// 		y:randFloat(10000000 - d, 10000000 + d),
+		// 		w:30,
+		// 		h:50
+		// 	}
+		// 	images.push(image)
+		// }
+		const d = 0;
+		const image = {
+			x:randFloat(10000000 - d, 10000000 + d),
+			y:randFloat(10000000 - d, 10000000 + d),
+			w:30,
+			h:50
 		}
+		images.push(image)
 		return images
 	}),
 	updateMatrix() {

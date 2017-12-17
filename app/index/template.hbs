@@ -6,7 +6,8 @@
 		{{#svg-viewport camera=camera}}
 			{{#svg-stage camera=camera updateList=updateList as |images|}}
 				{{#each images as |image|}}
-					{{svg-image href="/images/01.svg"
+					{{svg-image 
+						baseUrl="/images/01"
 						x=image.x 
 						y=image.y 
 						width=image.w 
